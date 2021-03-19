@@ -25,10 +25,11 @@ public class FIS_Aire {
         }
         
         // Establecer las entradas del sistema
-        fis.setVariable("area", 25);
-        fis.setVariable("ocupacion", 7.5);
-        fis.setVariable("temperatura", 20);
-        fis.setVariable("usodiario", 12);
+        fis.setVariable("TEMPERATURA", 25);
+        fis.setVariable("ALTITUD", 7.5);
+        fis.setVariable("LUZ", 20);
+        fis.setVariable("AGUA", 12);
+        fis.setVariable("PH", 12);
         
         /*
         // Muestra las reglas
@@ -51,10 +52,10 @@ public class FIS_Aire {
         */
              
         // Imprime el valor de salida del sistema
-        double potencia = fis.getVariable("potencia").getLatestDefuzzifiedValue();
-        double velocidad = fis.getVariable("velocidad").getLatestDefuzzifiedValue();
-        System.out.println("Para los valores de entrada\nla potencia es: " + potencia + "\n" +
-                            "la velocidad es: " + velocidad + "%\n");
+        double CALIDAD_CULTIVO = fis.getVariable("CALIDAD_CULTIVO").getLatestDefuzzifiedValue();
+        double CONDICION_SUELO = fis.getVariable("CONDICION_SUELO").getLatestDefuzzifiedValue();
+        System.out.println("Para los valores de entrada\nla calidad del cultivo es: " + CALIDAD_CULTIVO + "\n" +
+                            "la condición del suelo es: " + CONDICION_SUELO + "%\n");
         
         
         
