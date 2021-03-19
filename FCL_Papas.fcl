@@ -1,0 +1,124 @@
+FUNCTION_BLOCK prop	// Definición de bloque
+
+// Definición de las variables de entrada
+// El único tipo de variable soportada es REAL
+
+// La nueva variable de entrada 'usodiario' denota el número de horas de uso al día o en el transcurso de este
+// de forma que a un mayor uso la potencia también deba de ser mayor para mantenerse constante.
+VAR_INPUT				
+	area : REAL;
+	ocupacion : REAL;
+	temperatura : REAL;
+	usodiario : REAL;
+END_VAR
+
+// Definición de las variables de salida
+
+// La nueva variable de salida 'valocidad' denota la velocidad del aire que expele el aire acondicionado dado en m/s
+VAR_OUTPUT				
+	potencia : REAL;
+	velocidad : REAL;
+END_VAR
+
+// Fuzzificación de la variable de entrada 'area'
+FUZZIFY area			
+	TERM pequenia := (0, 1) (5, 1) (20, 0) ;
+	TERM mediana := trian 15 25 35 ;
+	TERM grande := (30, 0) (45, 1) (50, 1) ;
+END_FUZZIFY
+
+// Fuzzificación de la variable de entrada 'ocupacion'
+FUZZIFY ocupacion			
+	TERM pocas := trian 0 0 6 ;
+	TERM algunas := trian 3 7 11 ;
+	TERM muchas := (9, 0) (14, 1) (15, 1) ;
+END_FUZZIFY
+
+// Fuzzificación de la variable de entrada 'temperatura'
+FUZZIFY temperatura			
+	TERM fria := (0, 1) (10, 1) (20, 0) ;
+	TERM templada := trian 15 21 28 ;
+	TERM caliente := (26, 0) (35, 1) (40, 1) ;
+END_FUZZIFY
+
+// Fuzzificación de la variable de entrada 'usodiario'
+FUZZIFY usodiario			
+	TERM ocasional := trian 0 0 3 ;
+	TERM normal := trian 2 5 8 ;
+	TERM frecuente := trian 6 9 12 ;
+	TERM usual := trian 10 14 18 ;
+	TERM general := (16, 0) (20, 1) (24, 1) ;
+END_FUZZIFY
+
+// Defuzzificación de la variable de salida 'potencia'
+DEFUZZIFY potencia			
+	TERM baja := trian 900 1050 1267 ;
+	TERM media := trian 1120 1495 1743;
+	TERM alta := trian 1630 2000 2000;
+	METHOD : COG;		// Usa el metodo de 'Centro de Gravedad'
+	DEFAULT := 0;		// Valor por defecto si ninguna regla activa el defuzzificador
+END_DEFUZZIFY
+
+// Defuzzificación de la variable de salida 'velocidad'
+DEFUZZIFY velocidad			
+	TERM molesto := trian 0 0 0.3 ;
+	TERM pasiva := trian 0.2 0.4 0.6 ;
+	TERM agradable := trian 0.55 0.85 1.2 ;
+	TERM desagradable := trian 1.1 2 2 ;
+	METHOD : COG;		// Usa el metodo de 'Centro de Gravedad'
+	DEFAULT := 0;		// Valor por defecto si ninguna regla activa el defuzzificador
+END_DEFUZZIFY
+
+// Reglas de inferencia
+
+// NOTAR QUE LAS REGLAS QUE HACEN USO DEL 'NOT' AGRUPAN VARIAS ASÍ COMO LAS QUE NO INCLUYEN TODAS LAS VARIABLES DE ENTRADA
+
+RULEBLOCK No1
+	AND : MIN;	// Usa el 'mín' para el 'and' y por defecto el 'máx' para el 'OR'
+	ACT : MIN;	// Usa el metodo 'min' para la implicación (trunca)
+	ACCU : MAX;	// Usa el 'max' para la agregación
+
+	RULE 1 : IF area IS pequenia AND ocupacion IS algunas AND temperatura IS fria AND usodiario IS ocasional THEN potencia IS baja;
+	RULE 2 : IF area IS mediana AND ocupacion IS muchas AND temperatura IS templada AND usodiario IS frecuente THEN potencia IS alta;
+	RULE 3 : IF area IS grande AND ocupacion IS muchas AND temperatura IS fria AND usodiario IS normal THEN potencia IS media;
+    RULE 4 : IF area IS grande AND ocupacion IS muchas AND temperatura IS caliente AND usodiario IS normal THEN potencia IS alta;
+	RULE 5 : IF area IS pequenia AND ocupacion IS NOT muchas AND temperatura IS fria AND usodiario IS ocasional THEN potencia IS baja;
+	RULE 6 : IF area IS pequenia AND ocupacion IS muchas AND temperatura IS templada AND usodiario IS usual THEN potencia IS alta;   
+	RULE 7 : IF area IS pequenia AND ocupacion IS pocas AND temperatura IS templada AND usodiario IS ocasional THEN potencia IS baja;
+    RULE 8 : IF area IS pequenia AND ocupacion IS pocas AND temperatura IS NOT caliente AND usodiario IS NOT general THEN potencia IS media;
+    RULE 9 : IF area IS pequenia AND ocupacion IS pocas AND temperatura IS caliente AND usodiario IS general THEN potencia IS alta;
+    RULE 10 : IF area IS mediana AND ocupacion IS NOT pocas AND temperatura IS NOT fria AND usodiario IS frecuente THEN potencia IS alta;
+    RULE 11 : IF area IS mediana AND ocupacion IS NOT pocas AND temperatura IS templada AND usodiario IS usual THEN potencia IS alta;
+    RULE 12 : IF area IS mediana AND ocupacion IS NOT muchas AND temperatura IS caliente AND usodiario IS NOT ocasional THEN potencia IS alta;
+    RULE 13 : IF area IS mediana AND temperatura IS caliente AND usodiario IS ocasional THEN potencia IS media;
+    RULE 14 : IF area IS mediana AND temperatura IS caliente AND usodiario IS usual THEN potencia IS alta;
+    RULE 15 : IF area IS grande AND ocupacion IS NOT muchas AND temperatura IS templada AND usodiario IS NOT ocasional THEN potencia IS media;
+    RULE 16 : IF area IS grande AND ocupacion IS muchas AND temperatura IS templada AND usodiario IS normal THEN potencia IS media;
+    RULE 17 : IF area IS grande AND ocupacion IS pocas AND temperatura IS caliente AND usodiario IS general THEN potencia IS alta;
+    RULE 18 : IF area IS grande AND ocupacion IS algunas AND usodiario IS usual THEN potencia IS alta;
+    RULE 19 : IF area IS grande AND temperatura IS fria AND usodiario IS ocasional THEN potencia IS baja;
+    RULE 20 : IF area IS mediana AND ocupacion IS pocas AND temperatura IS fria AND usodiario IS ocasional THEN potencia IS baja;
+	RULE 21 : IF area IS pequenia AND ocupacion IS algunas AND temperatura IS fria AND usodiario IS ocasional THEN velocidad IS pasiva ;
+	RULE 22 : IF area IS mediana AND ocupacion IS muchas AND temperatura IS templada AND usodiario IS frecuente THEN velocidad IS agradable;
+	RULE 23 : IF area IS grande AND ocupacion IS muchas AND temperatura IS fria AND usodiario IS normal THEN velocidad IS agradable;
+    RULE 24 : IF area IS grande AND ocupacion IS muchas AND temperatura IS caliente AND usodiario IS normal THEN velocidad IS desagradable;
+	RULE 25 : IF area IS pequenia AND ocupacion IS NOT muchas AND temperatura IS fria AND usodiario IS ocasional THEN velocidad IS molesto;
+	RULE 26 : IF area IS pequenia AND ocupacion IS muchas AND temperatura IS templada AND usodiario IS usual THEN velocidad IS agradable;   
+	RULE 27 : IF area IS pequenia AND ocupacion IS pocas AND temperatura IS templada AND usodiario IS ocasional THEN velocidad IS pasiva;
+    RULE 28 : IF area IS pequenia AND ocupacion IS pocas AND temperatura IS NOT caliente AND usodiario IS NOT general THEN velocidad IS agradable;
+    RULE 29 : IF area IS pequenia AND ocupacion IS pocas AND temperatura IS caliente AND usodiario IS general THEN velocidad IS desagradable;
+    RULE 30 : IF area IS mediana AND ocupacion IS NOT pocas AND temperatura IS NOT fria AND usodiario IS frecuente THEN velocidad IS agradable;
+    RULE 31 : IF area IS mediana AND ocupacion IS NOT pocas AND temperatura IS templada AND usodiario IS usual THEN velocidad IS agradable;
+    RULE 32 : IF area IS mediana AND ocupacion IS NOT muchas AND temperatura IS caliente AND usodiario IS NOT ocasional THEN velocidad IS desagradable;
+    RULE 33 : IF area IS mediana AND temperatura IS caliente AND usodiario IS ocasional THEN velocidad IS agradable;
+    RULE 34 : IF area IS mediana AND temperatura IS caliente AND usodiario IS usual THEN velocidad IS desagradable;
+    RULE 35 : IF area IS grande AND ocupacion IS NOT muchas AND temperatura IS templada AND usodiario IS NOT ocasional THEN velocidad IS agradable;
+    RULE 36 : IF area IS grande AND ocupacion IS muchas AND temperatura IS templada AND usodiario IS normal THEN velocidad IS desagradable;
+    RULE 37 : IF area IS grande AND ocupacion IS pocas AND temperatura IS caliente AND usodiario IS general THEN velocidad IS agradable;
+    RULE 38 : IF area IS grande AND ocupacion IS algunas AND usodiario IS usual THEN velocidad IS agradable;
+    RULE 39 : IF area IS grande AND temperatura IS fria AND usodiario IS ocasional THEN velocidad IS pasiva;
+    RULE 40 : IF area IS mediana AND ocupacion IS pocas AND temperatura IS fria AND usodiario IS ocasional THEN velocidad IS pasiva;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
