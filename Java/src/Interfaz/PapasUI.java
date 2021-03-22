@@ -204,7 +204,7 @@ public class PapasUI extends JFrame {
 		});
 		
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\sebas\\Documents\\UNAL\\6_SextoS\\IA\\microproyectos\\Microproyecto1\\Java\\src\\Interfaz\\image\\papita.jpeg"));
+		lblNewLabel_1.setIcon(new ImageIcon("src/Interfaz/image/papita.jpeg"));
 		lblNewLabel_1.setBounds(10, 11, 513, 252);
 		contentPane.add(lblNewLabel_1);
 	}
