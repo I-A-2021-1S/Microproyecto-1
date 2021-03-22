@@ -56,7 +56,7 @@ public class FIS_Papas {
 	        double CALIDAD_CULTIVO = fis.getVariable("CALIDAD_CULTIVO").getLatestDefuzzifiedValue();
 	        double CONDICION_SUELO = fis.getVariable("CONDICION_SUELO").getLatestDefuzzifiedValue();
 	        return "Para los valores de entrada\nla calidad del cultivo es: " + CALIDAD_CULTIVO + "\n" +
-                    "la condición del suelo es: " + CONDICION_SUELO + "%\n";
+                    "la condicion del suelo sera: " + CONDICION_SUELO + "%\n";
 
         }
         

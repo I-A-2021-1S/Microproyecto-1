@@ -22,9 +22,13 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import javax.swing.border.LineBorder;
+import javax.swing.ImageIcon;
+import java.awt.SystemColor;
 
 public class PapasUI extends JFrame {
-
+		
 	/**
 	 * 
 	 */
@@ -59,86 +63,118 @@ public class PapasUI extends JFrame {
 	 * Create the frame.
 	 */
 	public PapasUI() {
+		super("FIS_Papas");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 549, 548);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		JLabel lblTemperatura = new JLabel("Temperatura: ");
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(SystemColor.menu);
+		panel.setBorder(new LineBorder(SystemColor.desktop));
+		panel.setForeground(Color.GREEN);
+		panel.setBounds(10, 274, 513, 225);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblPh = new JLabel("PH: ");
+		lblPh.setBounds(101, 135, 103, 35);
+		panel.add(lblPh);
+		lblPh.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		JLabel lblTemperatura = new JLabel("Temperatura:");
+		lblTemperatura.setBounds(101, 24, 103, 35);
+		panel.add(lblTemperatura);
 		lblTemperatura.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblTemperatura.setBounds(83, 50, 103, 35);
-		contentPane.add(lblTemperatura);
 		
 		TEMPERATURA = new JTextField();
-		TEMPERATURA.setBounds(196, 58, 96, 20);
-		contentPane.add(TEMPERATURA);
+		TEMPERATURA.setBounds(214, 32, 96, 20);
+		panel.add(TEMPERATURA);
 		TEMPERATURA.setColumns(10);
 		
 		JLabel lblAltitud = new JLabel("Altitud: ");
+		lblAltitud.setBounds(101, 50, 103, 35);
+		panel.add(lblAltitud);
 		lblAltitud.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblAltitud.setBounds(83, 83, 103, 35);
-		contentPane.add(lblAltitud);
 		
 		JLabel lblLuz = new JLabel("Luz: ");
+		lblLuz.setBounds(101, 78, 103, 35);
+		panel.add(lblLuz);
 		lblLuz.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblLuz.setBounds(83, 111, 103, 35);
-		contentPane.add(lblLuz);
 		
 		JLabel lblAgua = new JLabel("Agua: ");
+		lblAgua.setBounds(101, 106, 103, 35);
+		panel.add(lblAgua);
 		lblAgua.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblAgua.setBounds(83, 139, 103, 35);
-		contentPane.add(lblAgua);
-		
-		JLabel lblPh = new JLabel("Ph: ");
-		lblPh.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblPh.setBounds(83, 168, 103, 35);
-		contentPane.add(lblPh);
 		
 		ALTITUD = new JTextField();
+		ALTITUD.setBounds(214, 58, 96, 20);
+		panel.add(ALTITUD);
 		ALTITUD.setColumns(10);
-		ALTITUD.setBounds(196, 91, 96, 20);
-		contentPane.add(ALTITUD);
 		
 		LUZ = new JTextField();
+		LUZ.setBounds(214, 86, 96, 20);
+		panel.add(LUZ);
 		LUZ.setColumns(10);
-		LUZ.setBounds(196, 119, 96, 20);
-		contentPane.add(LUZ);
 		
 		AGUA = new JTextField();
+		AGUA.setBounds(214, 114, 96, 20);
+		panel.add(AGUA);
 		AGUA.setColumns(10);
-		AGUA.setBounds(196, 147, 96, 20);
-		contentPane.add(AGUA);
 		
 		PH = new JTextField();
+		PH.setBounds(214, 143, 96, 20);
+		panel.add(PH);
 		PH.setColumns(10);
-		PH.setBounds(196, 176, 96, 20);
-		contentPane.add(PH);
 		
 		JButton VerVariables = new JButton("Variables");
-		VerVariables.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				fis.MostrarVariables();
-				
-			}
-		});
-		VerVariables.setBounds(167, 227, 89, 23);
-		contentPane.add(VerVariables);
+		VerVariables.setBounds(216, 188, 89, 23);
+		panel.add(VerVariables);
 		
 		JButton VerReglas = new JButton("Reglas");
-		VerReglas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				StringBuffer rules = fis.MostrarReglas(); 
-		        JOptionPane.showMessageDialog(null, rules, "REGLAS",JOptionPane.INFORMATION_MESSAGE);
-
-			}
-		});
-		VerReglas.setBounds(52, 227, 89, 23);
-		contentPane.add(VerReglas);
+		VerReglas.setBounds(101, 188, 89, 23);
+		panel.add(VerReglas);
 		
 		JButton Calcular = new JButton("Calcular");
+		Calcular.setBounds(326, 188, 89, 23);
+		panel.add(Calcular);
+		
+		JLabel lblNewLabel = new JLabel("\u00B0C");
+		lblNewLabel.setBounds(320, 38, 46, 14);
+		panel.add(lblNewLabel);
+		
+		JLabel lblMsnm = new JLabel("MSNM");
+		lblMsnm.setBounds(320, 61, 46, 14);
+		panel.add(lblMsnm);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("HORAS");
+		lblNewLabel_1_1.setBounds(320, 89, 46, 14);
+		panel.add(lblNewLabel_1_1);
+		
+		JLabel lblNewLabel_1_1_1_1 = new JLabel("L/M^2");
+		lblNewLabel_1_1_1_1.setBounds(320, 117, 46, 14);
+		panel.add(lblNewLabel_1_1_1_1);
+		
+		JLabel lblc = new JLabel("[0 - 40]");
+		lblc.setBounds(381, 38, 78, 14);
+		panel.add(lblc);
+		
+		JLabel lblc_1_1 = new JLabel("[0- 16]");
+		lblc_1_1.setBounds(381, 89, 78, 14);
+		panel.add(lblc_1_1);
+		
+		JLabel lblc_1_2 = new JLabel("[0- 900]");
+		lblc_1_2.setBounds(381, 117, 78, 14);
+		panel.add(lblc_1_2);
+		
+		JLabel lblc_1_3 = new JLabel("[0- 14]");
+		lblc_1_3.setBounds(381, 146, 78, 14);
+		panel.add(lblc_1_3);
+		
+		JLabel lblc_1 = new JLabel("[0 - 3500]");
+		lblc_1.setBounds(381, 61, 78, 14);
+		panel.add(lblc_1);
 		Calcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {			
 		        
@@ -151,7 +187,25 @@ public class PapasUI extends JFrame {
 		        JOptionPane.showMessageDialog(null, respuesta, "RESPUESTA",JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		Calcular.setBounds(277, 227, 89, 23);
-		contentPane.add(Calcular);
+		VerReglas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				StringBuffer rules = fis.MostrarReglas(); 
+		        JOptionPane.showMessageDialog(null, rules, "REGLAS",JOptionPane.INFORMATION_MESSAGE);
+
+			}
+		});
+		VerVariables.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				fis.MostrarVariables();
+				
+			}
+		});
+		
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\sebas\\Documents\\UNAL\\6_SextoS\\IA\\microproyectos\\Microproyecto1\\Java\\src\\Interfaz\\image\\papita.jpeg"));
+		lblNewLabel_1.setBounds(10, 11, 513, 252);
+		contentPane.add(lblNewLabel_1);
 	}
 }
